@@ -65,7 +65,48 @@ example  (z : ℂ) : (I*z).im = z.re := by simp
 
 
 /-
-
-Exercise 3. Show that
-
+Exercise 3. Show that (1+z^2) = 1+2*z+z^2
 -/
+
+theorem Sec2_Ex3 (z:ℂ) : (1+z)^2 = 1+2*z+z^2 := by ring
+
+/-
+Exercise 4. Verify that each of the two numbers z = 1 ± i
+satisfies the equation z^2 − 2*z + 2 = 0.
+-/
+
+theorem Sec2_Ex4 (z:ℂ) : z=1+I ∨ z=1-I → z^2-2*z+2=0 := by
+  intro h
+  obtain h₁ | h₂ := h
+  · -- suppose z = 1+I
+    calc
+      z^2 - 2*z + 2 = (1+I)^2 - 2*(1+I) + 2 := by rw [h₁]
+       _ = 1+I*I := by ring
+       _ = 1 + (-1) := by rw [I_mul_I]
+       _ = 0 := by ring
+  · -- suppose z = 1-I
+    calc
+      z^2 - 2*z + 2 = (1-I)^2 - 2*(1-I) + 2 := by rw [h₂]
+       _ = 1+I*I := by ring
+       _ = 1 + (-1) := by rw [I_mul_I]
+       _ = 0 := by ring
+
+/-
+Exercise 5. Prove that multiplication of complex numbers is commutative
+-/
+theorem Sec2_Ex5 (z w : ℂ) : z*w = w*z := mul_comm z w
+
+/-
+Exercrse 6. Verify the associative law and distributive law
+-/
+
+theorem Sec2_Ex6a (a b c : ℂ): (a*b)*c = a*(b*c) := mul_assoc a b c
+
+theorem Sec2_Ex6b (a b c : ℂ): a*(b+c) = a*b+a*c := mul_add a b c
+
+/-
+Exercrse 7. Use the associative law for addition and the distributive law to show that
+  z(z₁ + z₂ + z₃) = z z₁ + z z₂ + z z₃
+-/
+
+theorem Sec2_Ex7 (z z₁ z₂ z₃ : ℂ) : z*(z₁ + z₂ + z₃) = z*z₁ + z*z₂ + z*z₃ := by ring
