@@ -2,7 +2,18 @@ import Mathlib.Tactic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Real.Basic
 
-open Complex 
+/-
+
+Verify the formula for solving quadratic equation.
+
+The first theorem consider the simplified version x^2=c.
+The second theorem verify the quadratic formula for monic polynomial x^2 +bx +c
+
+-/
+
+
+
+open Complex
 
 -- Solve equation x^2=c for some constant compelx number c
 --
@@ -30,7 +41,7 @@ theorem solve_square_eq_constant
 
 -- Prove that the roots of polynomial x^2+bx+c are -b/2 ± (√disc)/2
 -- where disc is the discriminant b^2-4c
--- 
+--
 -- Reduce the problem to the case with zero degree-1 term
 -- and apply the previous theorem
 --
