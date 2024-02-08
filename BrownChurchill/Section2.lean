@@ -160,6 +160,8 @@ First show that x^2-y^2+x+1=0 and 2*x*y+y = 0
 From the first equation we see that y is not zero.
 Then, the value of x is determined from one of the equations
 After x is known, then y^2 is determined from the other equation.
+
+The answer is x=-1/2, and y = ± √3/2
 -/
 
 theorem Sec2_Ex11 {z: ℂ} {x y : ℝ} (hx : x = z.re) (hy : y = z.im)
@@ -167,7 +169,7 @@ theorem Sec2_Ex11 {z: ℂ} {x y : ℝ} (hx : x = z.re) (hy : y = z.im)
   let w : ℂ := z^2+z+1
   let u : ℂ := ⟨ x^2-y^2+x+1, 2*x*y+y ⟩
   -- u is the complex number with real part x^2-y^2+x+1 and imag part 2xy+y                                       -- x^2
-  have h₁ : w = 0 := by   -- obviously we have  w=0
+  have h₁ : w = 0 := by   -- we have  w=0 from hypothesis
     calc
        w = (z^2+z+1) := by dsimp  -- substitute w by definition
        _ = (0) := by rw [hz]      -- z^2+z+1 = 0 by hypothesis
@@ -209,13 +211,13 @@ theorem Sec2_Ex11 {z: ℂ} {x y : ℝ} (hx : x = z.re) (hy : y = z.im)
         x = -1/2 + (1/2)*(2*x+1) := by ring
         _ = -1/2 + (1/2)*0 := by rw [eq_zero_of_ne_zero_of_mul_right_eq_zero y_ne_zero h_imag]
         _ = -1/2 := by ring
-  have h₆ : y^2 = 3/4 := by
+
+  constructor
+  · exact h₅   -- x = -1/2
+  · -- derive y^2=3/4 by calculations
     calc
       y^2 = 3/4 +y^2 - (-1/2)^2 - (- 1/2) - 1 := by ring
         _ = 3/4 +y^2 - (x)^2 - (x) - 1 := by rw [← h₅]
         _ = 3/4 - (x^2-y^2+x+1) := by ring
         _ = 3/4 - 0 := by rw [h_real]
         _ = 3/4 := by ring
-  constructor
-  · exact h₅
-  · exact h₆
