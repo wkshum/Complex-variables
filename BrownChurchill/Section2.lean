@@ -1,8 +1,21 @@
+/-
+**Exercises from Brown and Churchill
+  Section 2, Basic algebraic properties**
+
+Copyright (c) 2025 Kenneth Shum. All rights reserved.
+Released under Apache 2.0 license.
+Authors: Kenneth Shum
+-/
+
+
 import Mathlib.Tactic
 import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Real.Basic
+import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Complex
+
+section BrownChurchill2
 
 /-
 Exercise 1. Verify that
@@ -175,7 +188,7 @@ theorem Sec2_Ex11 {z: ℂ} {x y : ℝ} (hx : x = z.re) (hy : y = z.im)
        _ = (0) := by rw [hz]      -- z^2+z+1 = 0 by hypothesis
   have h₂ : u.re = (x^2-y^2+x+1) := by rfl
   have h₃ : u.im = (2*x*y+y)     := by rfl
-  have h₄ : w = u := by   -- want to show w is equal to u
+  have h₄ : w = u := by   -- show that w is equal to u
     calc
       w = z^2+z+1 := by dsimp     -- substitute w by definition
       _ = (z.re+z.im*I)^2 + (z.re+z.im*I) + 1 := by rw [re_add_im z] -- z = z.re+z.im*I
@@ -200,13 +213,13 @@ theorem Sec2_Ex11 {z: ℂ} {x y : ℝ} (hx : x = z.re) (hy : y = z.im)
       _ = (0:ℂ).im := by rw [← h₁]
       _ = 0 := rfl
   have h₅ : x=-1/2 := by       -- derive x = -1/2 from (2x+1)*y=0 and y≠0
-    have h : y^2 > 0 := by
+    have h : y^2 > 0 := by    -- show that y^2 is positive
       calc
         y^2 = y^2 + 0 := by ring
           _ = y^2 + (x^2-y^2+x+1) := by rw [h_real]
           _ = (x+1/2)^2 + 3/4 := by ring
           _ > 0 := by positivity
-    have y_ne_zero : y≠ 0 := by apply (sq_pos_iff y).mp h
+    have y_ne_zero : y≠ 0 := by apply (sq_pos_iff).mp h  -- y is nonzero
     calc
         x = -1/2 + (1/2)*(2*x+1) := by ring
         _ = -1/2 + (1/2)*0 := by rw [eq_zero_of_ne_zero_of_mul_right_eq_zero y_ne_zero h_imag]
@@ -221,3 +234,5 @@ theorem Sec2_Ex11 {z: ℂ} {x y : ℝ} (hx : x = z.re) (hy : y = z.im)
         _ = 3/4 - (x^2-y^2+x+1) := by ring
         _ = 3/4 - 0 := by rw [h_real]
         _ = 3/4 := by ring
+
+end BrownChurchill2
