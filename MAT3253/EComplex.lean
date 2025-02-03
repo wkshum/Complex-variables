@@ -288,6 +288,15 @@ noncomputable instance : DivInvMonoid EComplex where
   mul_one := EComplex.mul_one
 
 
+/- Negation is the same as multiplied by minus 1-/
+instance : Neg EComplex := ⟨fun z ↦ (-1:ℂ)*z⟩
+
+/- define z-w by z+(-1)*w-/
+instance : Sub EComplex := ⟨fun z w ↦ z +(-1:ℂ)*w ⟩
+
+
+
+section LFT
 
 
 /- a function f(z) is defined as a translation if f(z) = z+b
@@ -318,3 +327,18 @@ example (hf : isAffine f) (hg : isAffine g) :
 example (hf : isLinearFractionalTransformation f)
  (hg : isLinearFractionalTransformation g) :
   isLinearFractionalTransformation (f ∘ g) := by sorry
+
+/-
+ Cross ratio
+-/
+
+
+def cross_ratio (z₀ z₁ z₂ z₃ : EComplex) :=
+  (z₀ - z₁)*(z₂ - z₃)/((z₀ - z₃)*(z₂ - z₁))
+
+theorem cross_ratio_invariant (z₀ z₁ z₂ z₃ w₀ w₁ w₂ w₃: EComplex)
+ (f : EComplex → EComplex)
+ (hf : isLinearFractionalTransformation f)
+ (h0 : w₀ = f z₀) (h1 : w₁ = f z₁) (h2 : w₂ = f z₂) (h3 : w₃ = f z₃) :
+ cross_ratio z₀ z₁ z₂ z₃ = cross_ratio w₀ w₁ w₂ w₃ := by sorry
+
