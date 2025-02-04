@@ -261,15 +261,17 @@ def nsmulRec : ℕ → EComplex → EComplex
   | n + 1, a => nsmulRec n a + a
 
 /-
-EComplex is an additive commutative monoid
+EComplex is an additive commutative monoid with one
 -/
-noncomputable instance : AddCommMonoid EComplex where
+noncomputable instance instAddCommMonoidWithOneEComplex: AddCommMonoidWithOne EComplex where
  add_assoc := EComplex.add_assoc
  zero := (0:ℂ)
  zero_add := EComplex.zero_add
  add_zero := EComplex.add_zero
  nsmul := EComplex.nsmulRec
+ one := (1:ℂ)
  add_comm := EComplex.add_comm
+
 
 
 /- Multiplicative inverse in EComplex -/
