@@ -1,10 +1,12 @@
 import Mathlib.Tactic
 import Mathlib.Data.Real.Basic
 
-import MyProject.RiemannSphere
-
+import MyProject.ComplexVariables.MAT3253.EComplex
 
 noncomputable section
+
+open Complex EComplex
+
 
 section MobiusTransformation
 
