@@ -21,10 +21,10 @@ open Complex
 
 noncomputable section
 
-/- Define extended complex number by adding a point to ℂ -/
+/- *Define extended complex number by adding a point to ℂ* -/
 /-
- We implement it by the class of Option in LEAN,
- and use the term `none` in Option as the point at infinity.
+ We implement it by the class of `Option` in LEAN,
+ and use the term `none` in `Option` as the point at infinity.
 -/
 def EComplex := Option ℂ
 
@@ -35,7 +35,7 @@ deriving instance Nontrivial, Inhabited
 
 notation "ℂ∞" => EComplex
 
-/- Denote the term `none` in Option by symbol `∞` -/
+/- Denote the term `none` in `Option` by symbol `∞` -/
 notation "∞" => (none: EComplex)
 
 
