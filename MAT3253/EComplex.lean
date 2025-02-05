@@ -21,7 +21,7 @@ open Complex
 
 noncomputable section
 
-/- *Define extended complex number by adding a point to ℂ* -/
+/- Define extended complex number by adding a point to ℂ -/
 /-
  We implement it by the class of `Option` in LEAN,
  and use the term `none` in `Option` as the point at infinity.

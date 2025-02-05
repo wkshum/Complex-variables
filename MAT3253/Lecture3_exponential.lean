@@ -6,7 +6,7 @@ import Mathlib.Data.Complex.Exponential
 
 open Complex
 open BigOperators
-
+open Finset
 
 
 /-
@@ -18,18 +18,26 @@ theorem complex_triangle_inequality (z₁ z₂ : ℂ) : abs (z₁+z₂) ≤ abs 
 
 
 /-
-Definition 3.16
+Definition 3.18
 
 Complex exponential function is defined as the limit of a power series
 -/
--- #print exp     --def Complex.exp : ℂ → ℂ := fun z ↦ z.exp'.lim
+
+/-
+  In Mathlib, exp' z is defined as a pair,
+  consists of a power series and a proof that it is a Cauchy sequence
+  The first part `fun n => ∑ m ∈ range n, z ^ m / m.factorial` is a formal power series
+  The second part `isCauSeq_exp z` is a proof that this series converges at `z`
+-/
+example : exp' (z:ℂ) =  ⟨fun n => ∑ m ∈ range n, z ^ m / m.factorial, isCauSeq_exp z⟩ := rfl
+
+-- For any complex number z, exp z is defined as the limit of the Cauchy sequence exp'
+example : exp (z:ℂ) = CauSeq.lim (exp' z) := by rfl
 
 
 /-
-Theorem 3.17
+Theorem 3.19
 Additive property of exponential function exp (x+y) = exp x * exp y
-
-This is proved by using Cauchy product
 
 -/
 
@@ -39,7 +47,7 @@ example (z₁  z₂  : ℂ)  : exp (z₁+z₂) = exp z₁ * exp z₂ := by
 
 
 /-
-Corollary 3.18
+Corollary 3.20
 
 Exponential function is nonzero for all inputs
 -/
@@ -51,9 +59,7 @@ example (z : ℂ) : exp z ≠ 0 := by
   exact exp_ne_zero z
 
 
-/-
-Theorem 3.19
--/
+
 
 example (z : ℂ) : abs (exp z) = exp (z.re) := by sorry
 
