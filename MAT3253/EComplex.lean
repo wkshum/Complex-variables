@@ -3,7 +3,14 @@
 Construct the extended complex number system by
 adjoining a point at infinity to the complex number
 
-Define linear fractional transformation
+
+Reference:
+
+one-point compactification
+Mathlib/Topology/Compactification/OnePoint.lean
+
+Extended real number
+Mathlib/Data/Real/EReal.html
 
 -/
 
@@ -15,6 +22,10 @@ open Complex
 noncomputable section
 
 /- Define extended complex number by adding a point to ℂ -/
+/-
+ We implement it by the class of Option in LEAN,
+ and use the term `none` in Option as the point at infinity.
+-/
 def EComplex := Option ℂ
 
 
@@ -24,7 +35,9 @@ deriving instance Nontrivial, Inhabited
 
 notation "ℂ∞" => EComplex
 
+/- Denote the term `none` in Option by symbol `∞` -/
 notation "∞" => (none: EComplex)
+
 
 namespace EComplex
 
@@ -35,9 +48,19 @@ unsafe instance instRepr [Repr ℂ] : Repr (EComplex) :=
     | none => "∞"
     | some a => repr a⟩
 
+/- Embedding ℂ in EComplex -/
 @[coe, match_pattern] def some : ℂ  → EComplex :=
   Option.some
 
+/-- The canonical inclusion from complex to EComplex. -/
+@[coe, match_pattern] def Complex.toEComplex : ℂ  → EComplex := some
+
+/- Coecision from type ℂ to type EComplex-/
+instance coe : Coe ℂ  EComplex :=
+  ⟨some⟩
+
+-- Auxiliary class implementing `Coe*`.
+instance : CoeTC ℂ EComplex := ⟨some⟩
 
 -- def a0 : EComplex  := ∞
 -- def a1 : EComplex := (5: Real)
@@ -45,20 +68,6 @@ unsafe instance instRepr [Repr ℂ] : Repr (EComplex) :=
 -- #eval a0
 -- #eval a1
 
--- instance : AddCommMonoidWithOne EComplex :=
---   inferInstanceAs (AddCommMonoidWithOne (Option ℂ))
-
--- instance : CharZero EComplex :=
---   inferInstanceAs (CharZero (Option ℂ))
-
-/-- The canonical inclusion from complex to EComplex. -/
-@[coe, match_pattern] def Complex.toEComplex : ℂ  → EComplex := some
-
-
-
-/- Coecision from type ℂ to type EComplex-/
-instance coe : Coe ℂ  EComplex :=
-  ⟨some⟩
 
 instance : Inhabited EComplex := ⟨ (0:ℂ) ⟩
 
@@ -73,11 +82,6 @@ instance decidableEq : DecidableRel ((· = ·) : EComplex → EComplex → Prop)
   Option.instDecidableEq
 
 
--- @[simp]
--- protected theorem coe_eq_coe_iff {x y : ℂ}
---   : (x : EComplex) = (y : EComplex) ↔ x = y := sorry
---   --coe_injective.eq_iff
-
 /-- The map from extended complex to complex sending infinity to zero. -/
 def toComplex : EComplex → ℂ
   | ∞ => 0
@@ -87,6 +91,28 @@ def toComplex : EComplex → ℂ
 theorem toComplex_Inf : toComplex ∞ = 0 :=
   rfl
 
+@[simp]
+lemma some_eq_iff (a b : ℂ) : (Complex.toEComplex a = Complex.toEComplex b) ↔ (a = b) := by
+  rw [iff_eq_eq]
+  exact Option.some.injEq a b
+
+-- Coecion is injective
+theorem coe_injective : Function.Injective Complex.toEComplex := by
+  unfold Function.Injective
+  intro a b hab
+  exact (some_eq_iff a b).mp hab
+
+@[norm_cast]
+theorem coe_eq_coe {x y : ℂ} : (x : EComplex) = y ↔ x = y :=
+  coe_injective.eq_iff
+
+
+@[simp, norm_cast]
+protected theorem coe_eq_coe_iff {x y : ℂ} : (x : EComplex) = (y : EComplex) ↔ x = y :=
+  coe_injective.eq_iff
+
+protected theorem coe_ne_coe_iff {x y : ℂ} : (x : EComplex) ≠ (y : EComplex) ↔ x ≠ y :=
+  coe_injective.ne_iff
 
 
 
@@ -128,9 +154,15 @@ protected def mul : EComplex → EComplex → EComplex
   | (z : ℂ), (w : ℂ) => (z * w : ℂ)
 
 
+
 instance : Mul EComplex := ⟨EComplex.mul⟩
 
 instance : Add EComplex := ⟨EComplex.add⟩
+
+
+/- Subtraction in EComplex -/
+protected def sub : EComplex → EComplex → EComplex :=
+  fun z w => z + (-1:ℂ)*w
 
 
 @[simp, norm_cast]
@@ -281,6 +313,11 @@ protected def inv : EComplex → EComplex
 
 instance : Inv (EComplex) := ⟨EComplex.inv⟩
 
+/- Division in EComplex -/
+protected def div : EComplex → EComplex → EComplex :=
+  fun z w => z * (EComplex.inv w)
+
+
 /- Extended complex numbers form a monoid under multiplication-/
 /- Define a/b as a*b⁻¹ -/
 noncomputable instance : DivInvMonoid EComplex where
@@ -293,8 +330,67 @@ noncomputable instance : DivInvMonoid EComplex where
 /- Negation is the same as multiplied by minus 1-/
 instance : Neg EComplex := ⟨fun z ↦ (-1:ℂ)*z⟩
 
-/- define z-w by z+(-1)*w-/
+/- define subtraction z-w by z+(-1)*w-/
 instance : Sub EComplex := ⟨fun z w ↦ z +(-1:ℂ)*w ⟩
 
 
 
+/- A finite complex number is not equal to the point at infinity-/
+@[simp]
+theorem neq_inf (a:ℂ) : ↑a ≠ ∞ := by
+  exact ne_of_beq_false rfl
+
+
+
+
+/-
+  The computer now has the vocabulary of infinity
+  Some examples of calculations are given below
+-/
+
+-- 3+∞ = ∞
+example :  (3:EComplex).add ∞ = ∞ := by rfl
+
+-- 2-∞ = ∞
+example :  (2:EComplex).sub ∞ = ∞ := by rfl
+
+-- 1/∞ = 0
+example : (1:EComplex).div ∞ = 0 := by
+   rw [EComplex.div]
+   simp only [inv_inf, one_mul]
+   rfl
+
+/- a*0 = 0 for any complex number a-/
+@[simp]
+theorem mul_zero_eq_zero (a:ℂ): (a:EComplex).mul 0 = 0 := by
+  calc
+    (a:EComplex).mul 0 = ↑(a * 0) := by rfl
+                     _ = ↑0 := by exact congr_arg Complex.toEComplex (mul_zero a)
+
+/- 0*a = 0 for any complex number a-/
+@[simp]
+theorem zero_mul_eq_zero (a:ℂ): (0:EComplex).mul a = 0 := by
+  calc
+    (0:EComplex).mul a = ↑(0 * a) := by rfl
+                     _ = ↑0 := by exact congr_arg Complex.toEComplex (zero_mul a)
+
+/-  a/∞ =0 for all complex number a -/
+@[simp]
+theorem div_inf_eq_zero (a:ℂ): (a:EComplex).div ∞ = 0 := by
+  exact mul_zero_eq_zero a
+
+/- a/0 = ∞ for complex number a -/
+@[simp]
+theorem div_zero_eq_inf (a:ℂ) :  (a:EComplex).div 0 = ∞ := by
+  rw [EComplex.div, EComplex.inv]
+  simp only [reduceIte]
+  rfl
+
+example : EComplex.div (-431) 0 = ∞ := by
+  rw [EComplex.div, EComplex.inv]
+  simp only [↓reduceIte]
+  rfl
+
+
+
+end EComplex   -- end of the EComplex namespace
