@@ -18,7 +18,7 @@ import Mathlib.Analysis.SpecialFunctions.Log.Basic
 
 open Complex
 
-section BrownChurchill2
+section BrownChurchill_Section2
 
 /-
 Exercise 1. Verify that
@@ -184,7 +184,7 @@ theorem Sec2_Ex11 {z: ℂ} {x y : ℝ} (hx : x = z.re) (hy : y = z.im)
  (hz : z^2+z+1=0) :  x=-1/2 ∧ y^2=3/4 := by
   let w : ℂ := z^2+z+1
   let u : ℂ := ⟨ x^2-y^2+x+1, 2*x*y+y ⟩
-  -- u is the complex number with real part x^2-y^2+x+1 and imag part 2xy+y                                       -- x^2
+  -- u is the complex number with real part x^2-y^2+x+1 and imag part 2xy+y
   have h₁ : w = 0 := by   -- we have  w=0 from hypothesis
     calc
        w = (z^2+z+1) := by dsimp  -- substitute w by definition
@@ -238,4 +238,4 @@ theorem Sec2_Ex11 {z: ℂ} {x y : ℝ} (hx : x = z.re) (hy : y = z.im)
         _ = 3/4 - 0 := by rw [h_real]
         _ = 3/4 := by ring
 
-end BrownChurchill2
+end BrownChurchill_Section2

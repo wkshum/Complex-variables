@@ -27,6 +27,7 @@ example (z:ℂ) : abs z = Real.sqrt (normSq z) := by rfl
 
 example (z:ℂ) : normSq z = z.re*z.re+z.im*z.im := by rfl
 
+section BrownChurchil_Section5
 
 /-
 Question 2
@@ -65,3 +66,5 @@ the inequality |P(z)| ≤ 2 |a_n| |z^n| whenever |z| ≥ R
 example {n:ℕ} (a : Fin (n+1) → ℂ) : ∃ R:ℝ, ∀ z:ℂ,  abs z ≥ R →
  Complex.abs (∑  k: Fin (n+1), (a k)*(z)^(k:ℕ)) ≤  2 * (Complex.abs (a n)) * (abs z)^n
  := by sorry
+
+end BrownChurchil_Section5
