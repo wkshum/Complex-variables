@@ -1,11 +1,19 @@
-import Mathlib.Tactic
-import Mathlib.Data.Complex.Basic
-import Mathlib.Data.Real.Basic
+/-
+Copyright (c) 2025 Kenneth Shum. All rights reserved.
+Released under Apache 2.0 license.
+Authors: Kenneth Shum
+-/
 
 /-
   Exercises from Brown and Churchill
+  "Complex variables and applications, 9th edition"
   Section 3, Further algebraic properties
 -/
+
+
+import Mathlib.Tactic
+import Mathlib.Data.Complex.Basic
+import Mathlib.Data.Real.Basic
 
 open Complex
 
@@ -157,4 +165,3 @@ def S (n:ℕ) := ∑ x in (range (n)), 2^x
 example (z₁ z₂:ℂ) (n:ℕ) :
  (z₁+z₂)^n = ∑ k in range (n+1), (n.choose k)*z₁^(n-k)*z₂^k
 := by sorry
-

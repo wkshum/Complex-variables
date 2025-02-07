@@ -1,10 +1,13 @@
 /-
-**Exercises from Brown and Churchill
-  Section 2, Basic algebraic properties**
-
 Copyright (c) 2025 Kenneth Shum. All rights reserved.
 Released under Apache 2.0 license.
 Authors: Kenneth Shum
+-/
+
+/-
+  Exercises from Brown and Churchill
+  "Complex variables and applications, 9th edition"
+  Section 2, Basic algebraic properties
 -/
 
 

@@ -29,6 +29,31 @@ example (z w : ℂ) (hf: f=fun z => 1/z) (hz : circleStraightLine z) :
     circleStraightLine (f z) := by sorry
 
 
+/-
+Definition 5.4 Filter
+
+Filter is a collection F of subsets of a set X, such that
+* the set X is F
+* F is closed under going upward
+* F is closed under taking intersection
+
+Filter is a basic data type defined in
+Mathlib.Order.Filter.Basic
+
+structure Filter (α : Type*) where
+  /-- The set of sets that belong to the filter. -/
+  sets : Set (Set α)
+  /-- The set `Set.univ` belongs to any filter. -/
+  univ_sets : Set.univ ∈ sets
+  /-- If a set belongs to a filter, then its superset belongs to the filter as well. -/
+  sets_of_superset {x y} : x ∈ sets → x ⊆ y → y ∈ sets
+  /-- If two sets belong to a filter, then their intersection belongs to the filter as well. -/
+  inter_sets {x y} : x ∈ sets → y ∈ sets → x ∩ y ∈ sets
+
+-/
+
+
+
 
 /- Proposition 5.7 Stereographic projection -/
 

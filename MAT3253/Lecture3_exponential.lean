@@ -18,6 +18,45 @@ theorem complex_triangle_inequality (z₁ z₂ : ℂ) : abs (z₁+z₂) ≤ abs 
 
 
 /-
+Definition 3.2 Open disc
+-/
+
+def open_disc (z₀ : ℂ) (r:ℝ) : Set ℂ := {z: ℂ | abs (z - z₀) < r }
+
+
+/-
+Definition 3.3 Convergence of complex sequence
+
+The epsilon-delta definition of the meaning that
+ a complex sequence s_n converging to z₀.
+-/
+
+def isConvergentTo (s : ℕ → ℂ) (z₀ :ℂ) :=
+  ∃ ε > 0, ∃ N : ℕ, ∀ n≥ N, abs (s n - z₀) < ε
+
+def isConvergent (s:ℕ → ℂ) := ∃ z₀ : ℂ , isConvergentTo s z₀
+
+
+
+/-
+Definition 3.4 Cauchy sequence
+
+The meaning of Cauchy sequence is defined in
+Mathlib.Algebra.Order.CauSeq.Basic
+
+-/
+
+example : IsCauSeq Complex.abs (f : ℕ → ℂ) =  ∀ ε > 0, ∃ i, ∀ j ≥ i, abs (f j - f i) < ε
+  := rfl
+
+
+/-
+Proposition 3.5
+
+-/
+
+
+/-
 Definition 3.18
 
 Complex exponential function is defined as the limit of a power series
