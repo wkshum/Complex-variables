@@ -34,12 +34,53 @@ Question 2
 Verify Re z ≤ |Re z| ≤ |z| and Im z ≤ |Im z| ≤ |z|
 -/
 
-
+-- Mathlib already has Re z ≤ |z| and Im z ≤ |z|
 example (z:ℂ) : z.re ≤ abs z:= by exact re_le_abs z
+example (z:ℂ) : z.im ≤ abs z:= by exact im_le_abs z
 
-example (a:ℝ ) : a ≤ Complex.abs (a):= by sorry
 
-example (z:ℂ) : Complex.abs (z.re) ≤ abs z := by sorry
+-- first show that it is true with z.re replaced by any real number a
+lemma helper_for_question2 (a:ℝ) : a ≤ Complex.abs a := by
+  unfold Complex.abs
+  simp
+  refine Real.le_sqrt_of_sq_le ?_
+  -- the question is reduced to showing a^2 ≤ a*a
+  show a^2 ≤ a*a
+  calc
+    a^2 = a*a := by ring
+      _ ≤  a*a := Preorder.le_refl (a * a)
+
+
+example (z:ℂ) : z.re ≤ Complex.abs (z.re):= by
+  exact helper_for_question2 z.re
+
+example (z:ℂ) : z.im ≤ Complex.abs (z.im):= by
+  exact helper_for_question2 z.im
+
+
+example (z:ℂ) : Complex.abs (z.re) ≤ Complex.abs z := by
+  unfold Complex.abs
+  simp
+  gcongr
+  -- The question is reduced to showing
+  show z.re * z.re ≤ normSq z
+  calc
+    z.re * z.re = z.re*z.re + 0 := by ring
+              _ ≤ z.re*z.re + z.im*z.im := by rel [mul_self_nonneg z.im]
+              _ = normSq z := by rfl
+
+example (z:ℂ) : Complex.abs (z.im) ≤ Complex.abs z := by
+  unfold Complex.abs
+  simp
+  gcongr
+  -- The question is reduced to showing
+  show z.im * z.im ≤ normSq z
+  calc
+    z.im * z.im = 0 + z.im*z.im  := by ring
+              _ ≤ z.re*z.re + z.im*z.im  := by rel [mul_self_nonneg z.re]
+              _ = normSq z := by rfl
+
+
 
 
 /-
