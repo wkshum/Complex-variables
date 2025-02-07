@@ -15,7 +15,7 @@ import Mathlib.Data.Complex.Basic
 import Mathlib.Data.Real.Basic
 
 
-open Complex
+open Complex BigOperators
 
 
 /-
@@ -48,3 +48,20 @@ Question 3
 example (z₁ z₂ z₃ z₄ : ℂ) :
  (z₁+z₂).re /(abs (z₃+z₄)) ≤ (abs z₁ + abs z₂) / (Complex.abs (abs z₃ - abs z₄)) :=
  by sorry
+
+
+/- Question 4
+Verify that √2 |z| ≥ |Re z| + |Im z|
+-/
+
+example (z:ℂ) : Real.sqrt 2 * abs z ≥ Complex.abs z.re + Complex.abs z.im := by sorry
+
+
+/-
+Quesion 7 Show that for R sufficiently large, the polynomial P(z) in Example 3, Sec. 5, satisfies
+the inequality |P(z)| ≤ 2 |a_n| |z^n| whenever |z| ≥ R
+-/
+
+example {n:ℕ} (a : Fin (n+1) → ℂ) : ∃ R:ℝ, ∀ z:ℂ,  abs z ≥ R →
+ Complex.abs (∑  k: Fin (n+1), (a k)*(z)^(k:ℕ)) ≤  2 * (Complex.abs (a n)) * (abs z)^n
+ := by sorry
