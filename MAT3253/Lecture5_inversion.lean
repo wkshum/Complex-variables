@@ -1,14 +1,25 @@
+/-
+Copyright (c) 2025 Kenneth Shum All rights reserved.
+Released under Apache 2.0 license as described in the file LICENSE.
+Authors: Kenneth Shum
+-/
+
 import Mathlib.Tactic
 import Mathlib.Data.Real.Basic
 
-import MyProject.RiemannSphere
+import MyProject.ComplexVariables.MAT3253.EComplex
 
 open Complex
 
 noncomputable section
 
+section Lecture5
+
+-- notation for complex conjugation
+local notation "conj" => (starRingEnd ℂ)
+
 /- circles and straight lines are represented by equation
- A(x^2+y^2) + Bx + Cx + D = 0 for some real constants A, B, C, D
+ A(x^2+y^2) + Bx + Cy + D = 0 for some real constants A, B, C, D
  such that A, B, C, and D are not all zero.
 
  In complex variable, the equation is equivalent to
@@ -19,7 +30,15 @@ noncomputable section
 
 
 def circleStraightLine (z:ℂ) := ∃ a c : ℝ, ∃ b:ℂ, (a≠0 ∨ b≠0 ∨ c≠0) ∧
-  a * (normSq z) + b*z + ((starRingEnd ℂ) z) * ((starRingEnd ℂ) b) + c= 0
+  a * (normSq z) + b*z + (conj z) * (conj b) + c= 0
+
+
+-- The points z that lie on a circle or a straight line in the complex plane
+-- satisfie equation A(x^2+y^2) + Bx + Cy + D = 0 for some real constants A, B, C, D
+
+example (z:ℂ) (h: circleStraightLine z) : ∃ A B C D : ℝ , a≠0∨b≠0∨c≠0∨d≠0 ∧
+  A*(z.re^2 + z.im^2) + B*z.re + C*z.im + D = 0  := by sorry
+
 
 /- Theorem 5.1
   The inversion function f(z) = 1/z maps circle and straight line
@@ -66,3 +85,5 @@ example (x y r a b c:ℝ)  (hrpos: r>0)
  (hc : c = 2*r*(x^2+y^2)/(4*r^2+x^2+y^2))
  : a^2+b^2+(c-r)^2 = r^2
  := by sorry
+
+end Lecture5

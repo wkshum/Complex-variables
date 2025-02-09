@@ -13,6 +13,13 @@ open Finset BigOperators Complex
 
 /- summation by parts
 
+We are given two sequences a_n and b_n.
+Define the partial sum B_N as b_1+b_2+...+b_N
+B_0 is defined as 0.
+
+The summation-by-parts formual is the analog of
+integration by parts in the discrete case.
+
 a_M*b_M + ... + a_N b_N
 
 =     a_N * (B_N - B_{N-1})
@@ -58,10 +65,10 @@ let B (k:ℕ) := ∑ n ∈ Ico 1 (k+1), b n
 
   rw [sum_sub_distrib] -- apply the distributive law for series
 
-  -- separae the top term of a series
+  -- separate the top term of a series
   rw [sum_Ico_succ_top hMN (fun m => (a m) *(B m))]
 
-  -- isolating the lowest term in a series
+  -- isolate the lowest term in a series
   have : ∑ n ∈ Ico M (N+1), ((a n)*(B (n-1))) = (a M)*(B (M-1)) +  ∑ n ∈ Ico (M+1) (N+1), ((a n)*(B (n-1)))
     := by
     have one_lt_N_plus_1 : M < N+1 :=  Nat.lt_succ_of_le hMN
@@ -91,7 +98,8 @@ let B (k:ℕ) := ∑ n ∈ Ico 1 (k+1), b n
 
 
 
-
+-- A special case of the above theorem, with M=1.
+-- We prove it just by applying `summation_by_parts`, and check that B_0=0.
 theorem summation_by_parts' (N:ℕ) (hN : 1≤ N) (a b : ℕ → ℂ) :
 let B (k:ℕ) := ∑ n ∈ Ico 1 (k+1), b n
   ∑ n ∈ Ico 1 (N+1), (a n)*(b n)
@@ -103,3 +111,5 @@ let B (k:ℕ) := ∑ n ∈ Ico 1 (k+1), b n
 
   -- the statement is reduced to `1 ≤ 1`
   exact NeZero.one_le
+
+)
